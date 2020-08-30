@@ -48,6 +48,20 @@ class TodoListService {
     async update(id) {
         const result = await TodoItem.findById({ "_id" : mongoose.Types.ObjectId(id) });
         return await TodoItem.findByIdAndUpdate({"_id": mongoose.Types.ObjectId(id)}, {"status": result.status === 'Finished' ? 'Unfinish' : 'Finished'});
+    };
+
+    async findByContent(content) {
+        const todoList = await TodoItem.find({"content": {$regex: content}});
+        if (todoList) {
+            return todoList.map(todo => ({
+                id: todo._id,
+                content: todo.content,
+                status: todo.status,
+                tag: todo.tag,
+                isFinished: todo.status === "Finished" ? true : false
+            }))
+        }
+        return null;
     }
 }
 
