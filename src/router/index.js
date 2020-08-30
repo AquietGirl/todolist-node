@@ -25,7 +25,7 @@ router.get('', async (req, res) => {
     if (content) {
         result = await todoListService.findByContent(content);
     } else {
-        result = await todoListService.findAllByFinished();
+        result = await todoListService.findAll();
     }
     if (result) {
         res.json({
@@ -41,7 +41,7 @@ router.get('', async (req, res) => {
 });
 
 router.get('/finished', async (req, res) => {
-    const result = await todoListService.findAll();
+    const result = await todoListService.findAllByFinished();
     if (result) {
         res.json({
             status: 200,
