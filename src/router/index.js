@@ -21,11 +21,14 @@ router.post('', async (req, res) => {
 
 router.get('', async (req, res) => {
     const content = req.query.content;
+    const page = req.query.page;
+    const pageSize = req.query.pagesize;
     let result;
     if (content) {
         result = await todoListService.findByContent(content);
     } else {
-        result = await todoListService.findAll();
+        result = await todoListService.findByPage(page, pageSize);
+        // result = await todoListService.findAll();
     }
     if (result) {
         res.json({

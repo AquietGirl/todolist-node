@@ -42,11 +42,11 @@ class TodoListService {
     };
 
     async delete(id) {
-        return await TodoItem.remove({ "_id" : mongoose.Types.ObjectId(id) })
+        return await TodoItem.remove({ "_id" :id })
     };
 
     async update(id) {
-        const result = await TodoItem.findById({ "_id" : mongoose.Types.ObjectId(id) });
+        const result = await TodoItem.findById(id);
         return await TodoItem.findByIdAndUpdate({"_id": mongoose.Types.ObjectId(id)}, {"status": result.status === 'Finished' ? 'Unfinish' : 'Finished'});
     };
 
@@ -62,6 +62,10 @@ class TodoListService {
             }))
         }
         return null;
+    };
+
+    findByPage(page, pageSize) {
+        return TodoItem.find().skip((page - 1) * pageSize).limit(parseInt(pageSize))
     }
 }
 
