@@ -16,13 +16,15 @@ class TodoListService {
     async findAll() {
         const todoList = await TodoItem.find();
         if (todoList) {
-            return todoList.map(todo => ({
-                id: todo._id,
-                content: todo.content,
-                status: todo.status,
-                tag: todo.tag,
-                isFinished: todo.status === "Finished" ? true : false
-            }))
+            return todoList.map(todo => {
+                return {
+                    id: todo._id,
+                    content: todo.content,
+                    status: todo.status,
+                    tag: todo.tag,
+                    isFinished: todo.status === "Finished" ? true : false
+                }
+            })
         }
         return null;
     };
@@ -42,7 +44,7 @@ class TodoListService {
     };
 
     async delete(id) {
-        return await TodoItem.remove({ "_id" :id })
+        return await TodoItem.remove({"_id": id})
     };
 
     async update(id) {
@@ -64,8 +66,20 @@ class TodoListService {
         return null;
     };
 
-    findByPage(page, pageSize) {
-        return TodoItem.find().skip((page - 1) * pageSize).limit(parseInt(pageSize))
+    async findByPage(page, pageSize) {
+        const todoList = await TodoItem.find().skip((page - 1) * pageSize).limit(parseInt(pageSize))
+        if (todoList) {
+            return todoList.map(todo => {
+                return {
+                    id: todo._id,
+                    content: todo.content,
+                    status: todo.status,
+                    tag: todo.tag,
+                    isFinished: todo.status === "Finished" ? true : false
+                }
+            })
+        }
+        return null;
     }
 }
 
